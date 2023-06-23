@@ -141,7 +141,7 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
                 width = x2 - x1
                 height = y2 - y1
 
-                self.add_instance(
+                self.add_object(
                         i,
                         0,
                         int(cls),
@@ -174,7 +174,7 @@ class InferYoloV8SegFactory(dataprocess.CTaskFactory):
         self.info.description = "This algorithm proposes inference for instance segmentation " \
                                 "with YOLOv8 models"
         # relative path -> as displayed in Ikomia application process tree
-        self.info.path = "Plugins/Python/Segmentation"
+        self.info.path = "Plugins/Python/Instance Segmentation"
         self.info.version = "1.0.0"
         self.info.icon_path = "icons/icon.png"
         self.info.authors = "Jocher, G., Chaurasia, A., & Qiu, J"
