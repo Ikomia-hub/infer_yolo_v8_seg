@@ -19,8 +19,6 @@
 from ikomia import core, dataprocess
 from ikomia.utils import pyqtutils, qtconversion
 from infer_yolo_v8_seg.infer_yolo_v8_seg_process import InferYoloV8SegParam
-
-# PyQt GUI framework
 from PyQt5.QtWidgets import *
 from torch.cuda import is_available
 
@@ -113,7 +111,6 @@ class InferYoloV8SegWidget(core.CWorkflowTaskWidget):
 
         # Set widget layout
         self.set_layout(layout_ptr)
-
 
     def on_custom_weight_changed(self, int):
         self.label_hyp.setVisible(self.check_cfg.isChecked())

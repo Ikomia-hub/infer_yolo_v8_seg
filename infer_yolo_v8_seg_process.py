@@ -71,10 +71,6 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
 
     def __init__(self, name, param):
         dataprocess.CInstanceSegmentationTask.__init__(self, name)
-        # Add input/output of the process here
-        # Example :  self.add_input(dataprocess.CImageIO())
-        #           self.add_output(dataprocess.CImageIO())
-
         # Create parameters class
         if param is None:
             self.set_param_object(InferYoloV8SegParam())
@@ -93,9 +89,9 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
         return 1
 
     def run(self):
-        # Core function of your process
         # Call begin_task_run() for initialization
         self.begin_task_run()
+
         # Get parameters :
         param = self.get_param_object()
 
@@ -126,7 +122,6 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
             half=self.half,
             device=self.device
         )
-
 
         # Set classe names
         self.classes = list(results[0].names.values())
