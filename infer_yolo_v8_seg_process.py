@@ -140,7 +140,6 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
                 x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
                 width = x2 - x1
                 height = y2 - y1
-
                 self.add_object(
                         i,
                         0,
@@ -187,7 +186,7 @@ class InferYoloV8SegFactory(dataprocess.CTaskFactory):
         # Code source repository
         self.info.repository = "https://github.com/ultralytics/ultralytics"
         # Keywords used for search
-        self.info.keywords = "YOLO, object, detection, ultralytics, real-time"
+        self.info.keywords = "YOLO, instance, segmentation, ultralytics"
 
     def create(self, param=None):
         # Create process object
