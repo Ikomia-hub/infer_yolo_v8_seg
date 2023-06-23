@@ -175,23 +175,24 @@ class InferYoloV8SegFactory(dataprocess.CTaskFactory):
         dataprocess.CTaskFactory.__init__(self)
         # Set process information as string here
         self.info.name = "infer_yolo_v8_seg"
-        self.info.short_description = "your short description"
-        self.info.description = "your description"
+        self.info.short_description = "Inference with YOLOv8 segmentation models"
+        self.info.description = "This algorithm proposes inference for instance segmentation " \
+                                "with YOLOv8 models"
         # relative path -> as displayed in Ikomia application process tree
-        self.info.path = "Plugins/Python"
+        self.info.path = "Plugins/Python/Segmentation"
         self.info.version = "1.0.0"
-        # self.info.icon_path = "your path to a specific icon"
-        self.info.authors = "algorithm author"
-        self.info.article = "title of associated research article"
-        self.info.journal = "publication journal"
-        self.info.year = 2021
-        self.info.license = "MIT License"
+        self.info.icon_path = "icons/icon.png"
+        self.info.authors = "Jocher, G., Chaurasia, A., & Qiu, J"
+        self.info.article = "YOLO by Ultralytics"
+        self.info.journal = ""
+        self.info.year = 2023
+        self.info.license = "AGPL-3.0"
         # URL of documentation
-        self.info.documentation_link = ""
+        self.info.documentation_link = "https://docs.ultralytics.com/"
         # Code source repository
-        self.info.repository = ""
+        self.info.repository = "https://github.com/ultralytics/ultralytics"
         # Keywords used for search
-        self.info.keywords = "your,keywords,here"
+        self.info.keywords = "YOLO, object, detection, ultralytics, real-time"
 
     def create(self, param=None):
         # Create process object
