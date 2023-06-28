@@ -1,13 +1,13 @@
 import logging
 from ikomia.core import task
 from ikomia.utils.tests import run_for_test
+import cv2
 
 
 logger = logging.getLogger(__name__)
 
 
 def test(t, data_dict):
-    logger.info(f"===== Test::{t.name} =====")
     logger.info("----- Use default parameters")
     img = cv2.imread(data_dict["images"]["detection"]["coco"])[::-1]
     input_img_0 = t.get_input(0)
