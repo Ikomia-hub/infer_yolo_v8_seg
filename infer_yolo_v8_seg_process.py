@@ -92,6 +92,9 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
         # Call begin_task_run() for initialization
         self.begin_task_run()
 
+        # Clean detection output
+        self.get_output(1).clear_data()
+        
         # Get parameters :
         param = self.get_param_object()
 
@@ -128,30 +131,32 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
         self.set_names(self.classes)
 
         # Get output
-        boxes = results[0].boxes.xyxy
-        confidences = results[0].boxes.conf
-        class_idx = results[0].boxes.cls
-        masks = results[0].masks.data
-        masks = masks.detach().cpu().numpy()
+        if results[0].masks is not None:
+            boxes = results[0].boxes.xyxy
+            confidences = results[0].boxes.conf
+            class_idx = results[0].boxes.cls
+            masks = results[0].masks.data
+            masks = masks.detach().cpu().numpy()
 
-        for i, (box, conf, cls, mask) in enumerate(zip(boxes, confidences, class_idx, masks)):
-                box = box.detach().cpu().numpy()
-                mask = cv2.resize(mask, src_image.shape[:2][::-1])
-                x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
-                width = x2 - x1
-                height = y2 - y1
-                self.add_object(
-                        i,
-                        0,
-                        int(cls),
-                        float(conf),
-                        float(x1),
-                        float(y1),
-                        float(width),
-                        float(height),
-                        mask
-                )
-
+            for i, (box, conf, cls, mask) in enumerate(zip(boxes, confidences, class_idx, masks)):
+                    box = box.detach().cpu().numpy()
+                    mask = cv2.resize(mask, src_image.shape[:2][::-1])
+                    x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
+                    width = x2 - x1
+                    height = y2 - y1
+                    self.add_instance(
+                            i,
+                            0,
+                            int(cls),
+                            float(conf),
+                            float(x1),
+                            float(y1),
+                            float(width),
+                            float(height),
+                            mask
+                    )
+        # self.get_output(1).clear_data()
+        
         # Step progress bar (Ikomia Studio):
         self.emit_step_progress()
 
