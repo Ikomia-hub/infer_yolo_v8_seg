@@ -94,7 +94,7 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
 
         # Clean detection output
         self.get_output(1).clear_data()
-        
+
         # Get parameters :
         param = self.get_param_object()
 
@@ -144,7 +144,7 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
                     x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
                     width = x2 - x1
                     height = y2 - y1
-                    self.add_instance(
+                    self.add_object(
                             i,
                             0,
                             int(cls),
