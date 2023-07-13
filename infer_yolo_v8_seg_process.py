@@ -106,7 +106,8 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
 
         # Load model
         if param.update or self.model is None:
-            self.device = 1 if param.cuda else torch.device("cpu")
+            self.device = torch.device(
+                "cuda") if param.cuda else torch.device("cpu")
             self.half = True if param.cuda else False
 
             if param.model_weight_file:
@@ -139,24 +140,23 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
             masks = masks.detach().cpu().numpy()
 
             for i, (box, conf, cls, mask) in enumerate(zip(boxes, confidences, class_idx, masks)):
-                    box = box.detach().cpu().numpy()
-                    mask = cv2.resize(mask, src_image.shape[:2][::-1])
-                    x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
-                    width = x2 - x1
-                    height = y2 - y1
-                    self.add_object(
-                            i,
-                            0,
-                            int(cls),
-                            float(conf),
-                            float(x1),
-                            float(y1),
-                            float(width),
-                            float(height),
-                            mask
-                    )
-        # self.get_output(1).clear_data()
-        
+                box = box.detach().cpu().numpy()
+                mask = cv2.resize(mask, src_image.shape[:2][::-1])
+                x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
+                width = x2 - x1
+                height = y2 - y1
+                self.add_object(
+                    i,
+                    0,
+                    int(cls),
+                    float(conf),
+                    float(x1),
+                    float(y1),
+                    float(width),
+                    float(height),
+                    mask
+                )
+
         # Step progress bar (Ikomia Studio):
         self.emit_step_progress()
 
