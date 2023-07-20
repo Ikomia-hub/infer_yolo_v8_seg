@@ -21,12 +21,15 @@ from ikomia import core, dataprocess, utils
 from ultralytics import YOLO
 import torch
 import cv2
-
+import os
+from ultralytics import download
 
 # --------------------
 # - Class to handle the process parameters
 # - Inherits PyCore.CWorkflowTaskParam from Ikomia API
 # --------------------
+
+
 class InferYoloV8SegParam(core.CWorkflowTaskParam):
 
     def __init__(self):
@@ -77,6 +80,8 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
         else:
             self.set_param_object(copy.deepcopy(param))
 
+        self.repo = 'ultralytics/assets'
+        self.version = 'v0.0.0'
         self.device = torch.device("cpu")
         self.classes = None
         self.model = None
@@ -104,7 +109,7 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
         # Get image from input/output (numpy array):
         src_image = input.get_image()
 
-        # Load model
+       # Load model
         if param.update or self.model is None:
             self.device = torch.device(
                 "cuda") if param.cuda else torch.device("cpu")
@@ -113,7 +118,16 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
             if param.model_weight_file:
                 self.model = YOLO(param.model_weight_file)
             else:
-                self.model = YOLO(f'{param.model_name}.pt')
+                # Set path
+                model_folder = os.path.join(os.path.dirname(
+                    os.path.realpath(__file__)), "weights")
+                model_weights = os.path.join(
+                    str(model_folder), f'{param.model_name}.pt')
+                # Download model if not exist
+                if not os.path.isfile(model_weights):
+                    url = f'https://github.com/{self.repo}/releases/download/{self.version}/{param.model_name}.pt'
+                    download(url=url, dir=model_folder, unzip=True)
+                self.model = YOLO(model_weights)
             param.update = False
 
         # Run detection
@@ -179,7 +193,7 @@ class InferYoloV8SegFactory(dataprocess.CTaskFactory):
                                 "with YOLOv8 models"
         # relative path -> as displayed in Ikomia application process tree
         self.info.path = "Plugins/Python/Instance Segmentation"
-        self.info.version = "1.0.0"
+        self.info.version = "1.0.1"
         self.info.icon_path = "icons/icon.png"
         self.info.authors = "Jocher, G., Chaurasia, A., & Qiu, J"
         self.info.article = "YOLO by Ultralytics"
