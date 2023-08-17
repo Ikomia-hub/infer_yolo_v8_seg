@@ -93,6 +93,27 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
         # This is handled by the main progress bar of Ikomia application
         return 1
 
+    def resize_to_stride(self, image, imgsz, stride=32):
+        # Calculate the scaling factor based on the longer side
+        scale_factor = imgsz / max(image.shape[:2])
+
+        # Compute target dimensions (which might not be multiples of stride)
+        target_width = int(scale_factor * image.shape[1])
+        target_height = int(scale_factor * image.shape[0])
+
+        # Adjust target dimensions for stride
+        new_width = ((target_width + stride - 1) // stride) * stride
+        new_height = ((target_height + stride - 1) // stride) * stride
+
+        # Calculate width and height ratios (dw and dh)
+        dw = image.shape[1] / new_width
+        dh = image.shape[0] / new_height
+
+        # Resize the image to the new dimensions
+        resized_image = cv2.resize(image, (new_width, new_height))
+
+        return resized_image, dw, dh
+
     def run(self):
         # Call begin_task_run() for initialization
         self.begin_task_run()
@@ -107,7 +128,13 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
         input = self.get_input(0)
 
         # Get image from input/output (numpy array):
-        src_image = input.get_image()
+        ini_src_image = input.get_image()
+
+        # Resize image to input size and stride
+        src_image, dw, dh = self.resize_to_stride(
+                                    image=ini_src_image,
+                                    imgsz=param.input_size
+                                    )
 
        # Load model
         if param.update or self.model is None:
@@ -134,7 +161,7 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
         results = self.model.predict(
             src_image,
             save=False,
-            imgsz=param.input_size,
+            # imgsz=param.input_size,
             conf=param.conf_thres,
             iou=param.iou_thres,
             half=self.half,
@@ -153,10 +180,14 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
             masks = results[0].masks.data
             masks = masks.detach().cpu().numpy()
 
+
             for i, (box, conf, cls, mask) in enumerate(zip(boxes, confidences, class_idx, masks)):
                 box = box.detach().cpu().numpy()
-                mask = cv2.resize(mask, src_image.shape[:2][::-1])
-                x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
+                mask = cv2.resize(mask, ini_src_image.shape[:2][::-1])
+                x1 = box[0] * dw
+                x2 = box[2] * dw
+                y1 = box[1] * dh
+                y2 = box[3] * dh
                 width = x2 - x1
                 height = y2 - y1
                 self.add_object(
