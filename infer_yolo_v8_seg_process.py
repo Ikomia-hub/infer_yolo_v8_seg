@@ -61,7 +61,6 @@ class InferYoloV8SegParam(core.CWorkflowTaskParam):
         param_map["input_size"] = str(self.input_size)
         param_map["conf_thres"] = str(self.conf_thres)
         param_map["iou_thres"] = str(self.iou_thres)
-        param_map["update"] = str(self.update)
         param_map["model_weight_file"] = str(self.model_weight_file)
         return param_map
 
