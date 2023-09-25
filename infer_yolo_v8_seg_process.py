@@ -139,7 +139,7 @@ class InferYoloV8Seg(dataprocess.CInstanceSegmentationTask):
         if param.update or self.model is None:
             self.device = torch.device(
                 "cuda") if param.cuda and torch.cuda.is_available() else torch.device("cpu")
-            self.half = True if param.cuda else False
+            self.half = True if param.cuda and torch.cuda.is_available() else False
 
             if param.model_weight_file:
                 self.model = YOLO(param.model_weight_file)
