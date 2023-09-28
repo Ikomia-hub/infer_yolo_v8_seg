@@ -219,8 +219,6 @@ class InferYoloV8SegFactory(dataprocess.CTaskFactory):
         # Set process information as string here
         self.info.name = "infer_yolo_v8_seg"
         self.info.short_description = "Inference with YOLOv8 segmentation models"
-        self.info.description = "This algorithm proposes inference for instance segmentation " \
-                                "with YOLOv8 models"
         # relative path -> as displayed in Ikomia application process tree
         self.info.path = "Plugins/Python/Instance Segmentation"
         self.info.version = "1.0.2"
@@ -233,7 +231,8 @@ class InferYoloV8SegFactory(dataprocess.CTaskFactory):
         # URL of documentation
         self.info.documentation_link = "https://docs.ultralytics.com/"
         # Code source repository
-        self.info.repository = "https://github.com/ultralytics/ultralytics"
+        self.info.repository = "https://github.com/Ikomia-hub/infer_yolo_v8_seg"
+        self.info.original_repository = "https://github.com/ultralytics/ultralytics"
         # Keywords used for search
         self.info.keywords = "YOLO, instance, segmentation, ultralytics"
 
