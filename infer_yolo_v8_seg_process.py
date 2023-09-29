@@ -235,6 +235,8 @@ class InferYoloV8SegFactory(dataprocess.CTaskFactory):
         self.info.original_repository = "https://github.com/ultralytics/ultralytics"
         # Keywords used for search
         self.info.keywords = "YOLO, instance, segmentation, ultralytics"
+        self.info.algo_type = core.AlgoType.INFER
+        self.info.algo_tasks = "INSTANCE_SEGMENTATION"
 
     def create(self, param=None):
         # Create process object
