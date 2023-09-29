@@ -21,7 +21,7 @@
 
 Run YOLOv8 instance segmentation models.
 
-![Desk object instance segmentation](https://raw.githubusercontent.com/Ikomia-hub/infer_yolo_v8_seg/feat/new_readme/icons/output.jpg)
+![Desk object instance segmentation](https://raw.githubusercontent.com/Ikomia-hub/infer_yolo_v8_seg/main/icons/output.jpg)
 
 
 ## :rocket: Use with Ikomia API
