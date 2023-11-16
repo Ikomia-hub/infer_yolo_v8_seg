@@ -221,7 +221,7 @@ class InferYoloV8SegFactory(dataprocess.CTaskFactory):
         self.info.short_description = "Inference with YOLOv8 segmentation models"
         # relative path -> as displayed in Ikomia application process tree
         self.info.path = "Plugins/Python/Instance Segmentation"
-        self.info.version = "1.0.2"
+        self.info.version = "1.0.3"
         self.info.icon_path = "icons/icon.png"
         self.info.authors = "Jocher, G., Chaurasia, A., & Qiu, J"
         self.info.article = "YOLO by Ultralytics"
